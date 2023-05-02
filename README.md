@@ -6,7 +6,7 @@
 
 ## WRRC
 Add an image of your WRRC here
-
+![](./Lab13.png)
 ## Overview
 
 ## Getting Started
@@ -14,3 +14,4 @@ Add an image of your WRRC here
 
 ## Project Features
 <!-- What are the features included in you app -->
+
