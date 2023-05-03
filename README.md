@@ -6,7 +6,7 @@
 
 ## WRRC
 Add an image of your WRRC here
-![](./Lab13.png)
+![](./assests/Lab13.png)
 
 ## Overview
 
