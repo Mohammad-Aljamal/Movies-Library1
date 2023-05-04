@@ -1,6 +1,7 @@
 'use strict';
 require("dotenv").config();
 const express = require("express");
+
 const dataJson = require ("./Movie Data/data.json");
 const axios = require("axios");
 const app = express();
@@ -63,11 +64,12 @@ async function trendingHandler(req,res) {
     const url =`https://api.themoviedb.org/3/trending/all/week?api_key=${movieKey}&language=en-US`;
     let trendMovieFromApi = await axios.get(url);
     // console.log(trendMovieFromApi.Data);
-
+    
     // res.send(trendMovieFromApi.Data)
     let MovieTrends = trendMovieFromApi.data.results.map((item) =>{
         return new ApiData (item.id, item.title, item.release_date, item.poster_path, item.overview);
     });
+
 
     res.send(MovieTrends);
 }
@@ -87,6 +89,25 @@ function discoverHandler (req,res) {
 
     const url = `https://api.themoviedb.org/3/discover/movie?api_key=${movieKey}&language=en-US&include_adult=false&with_watch_monetization_types=flatrate`;
 
+
+function discoverHandler (req,res) {
+
+    const url = `https://api.themoviedb.org/3/discover/movie?api_key=${movieKey}&language=en-US&include_adult=false&with_watch_monetization_types=flatrate`;
+
+    axios.get(url).then ((result) => {
+        let discover = result.data.results.map((item) => {
+            return new DiscoverData (item.title, item.overview);
+        })
+        res.send(discover);
+    });
+}
+
+function genresHandler (req,res) {
+    const url = `https://api.themoviedb.org/3/genre/movie/list?api_key=${movieKey}&language=en-US`;
+    axios.get(url).then ((result) => {
+        res.send(result.data);
+    })
+
     axios.get(url).then ((result) => {
         let discover = result.data.results.map((item) => {
             return new DiscoverData (item.title, item.overview);
@@ -102,6 +123,7 @@ function genresHandler (req,res) {
     })
 
 }
+
 
 function favoriteHandler (req,res)  {
     res.send('Welcome to Favorite Page');
