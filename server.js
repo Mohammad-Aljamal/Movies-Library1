@@ -2,13 +2,16 @@
 require("dotenv").config();
 const express = require("express");
 
-const dataJson = require ("./Movie Data/data.json");
+const dataJson = require ("./Movie_Data/data.json");
 const axios = require("axios");
+const pg = require("pg");      //sql
+const clinet = new pg.Client(process.env.DATABASE_URL); //sql
 const app = express();
 const port = process.env.PORT;
 const movieKey = process.env.API_KEY;
 const cors = require('cors');
 app.use(cors());
+app.use(express.json());    //to allow the server to read req.body
 // app.use(errorHandler);
 
 let result = [];
@@ -29,6 +32,15 @@ function ApiData (id, title, release_date, poster_path, overview){
     this.overview = overview;
 }
 
+function MovieComments (id, title, release_date, poster_path, overview,comments){
+    this.id = id;
+    this.title = title;
+    this.release_date = release_date;
+    this.poster_path = poster_path;
+    this.overview = overview;
+    this.comments = comments;
+}
+
 function DiscoverData (title ,overview) {
     this.title= title;
     this.overview = overview;
@@ -46,7 +58,9 @@ app.get('/discover', discoverHandler);
 
 app.get('/genres', genresHandler);
 
-app.get('/favorite', favoriteHandler);
+app.post('/favorite',addMovie);
+
+app.get('/favorite',getMovie);
 
 
 // app.use(notFoundHandler);
@@ -69,25 +83,17 @@ async function trendingHandler(req,res) {
     let MovieTrends = trendMovieFromApi.data.results.map((item) =>{
         return new ApiData (item.id, item.title, item.release_date, item.poster_path, item.overview);
     });
-
-
     res.send(MovieTrends);
 }
 
 function searchHandler (req,res) {
-
     let movieName = req.query.query;
     const url = `https://api.themoviedb.org/3/search/movie?api_key=${movieKey}&language=en-US&query=${movieName}`;
 
     axios.get(url).then ((result) => {
         res.send(result.data);
     })
-
 }
-
-function discoverHandler (req,res) {
-
-    const url = `https://api.themoviedb.org/3/discover/movie?api_key=${movieKey}&language=en-US&include_adult=false&with_watch_monetization_types=flatrate`;
 
 
 function discoverHandler (req,res) {
@@ -116,19 +122,35 @@ function genresHandler (req,res) {
     });
 }
 
-function genresHandler (req,res) {
-    const url = `https://api.themoviedb.org/3/genre/movie/list?api_key=${movieKey}&language=en-US`;
-    axios.get(url).then ((result) => {
-        res.send(result.data);
+function addMovie (req,res){
+    const movie = req.body;
+    const sql = 'INSERT into movie (title,comments) values ($1,$2);';
+    const values = [movie.title , movie.comments];
+    clinet.query(sql , values).then(()=>{
+        res.send("added");
     })
+}
 
+function getMovie (req,res){
+    const sql = 'select * from movie';
+    clinet.query(sql).then((data)=>{
+        let movieComm = data.rows.map((item)=>{
+            return new MovieComments(
+                item.id ,
+                item.title,
+                item.release_date,
+                item.poster_path,
+                item.overview,
+                item.comments)
+        })
+
+        res.send(movieComm);
+    })
 }
 
 
-function favoriteHandler (req,res)  {
-    res.send('Welcome to Favorite Page');
 
-}
+
 
 // function notFoundHandler (req,res) {
 //     res.status(404).send('page not found error');
@@ -139,7 +161,9 @@ function favoriteHandler (req,res)  {
 
 // }
 
-app.listen(port,() => {
+clinet.connect().then(()=>{
+    app.listen(port,() => {
 
-    console.log(`im listen to port ${port}`)
+        console.log(`im listen to port ${port}`)
+    });
 });
