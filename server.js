@@ -1,7 +1,8 @@
 'use strict';
 require("dotenv").config();
 const express = require("express");
-const dataJson = require ("./Movie_Data/data.json");
+
+const dataJson = require ("./Movie Data/data.json");
 const axios = require("axios");
 const app = express();
 const port = process.env.PORT;
@@ -69,6 +70,7 @@ async function trendingHandler(req,res) {
         return new ApiData (item.id, item.title, item.release_date, item.poster_path, item.overview);
     });
 
+
     res.send(MovieTrends);
 }
 
@@ -82,6 +84,11 @@ function searchHandler (req,res) {
     })
 
 }
+
+function discoverHandler (req,res) {
+
+    const url = `https://api.themoviedb.org/3/discover/movie?api_key=${movieKey}&language=en-US&include_adult=false&with_watch_monetization_types=flatrate`;
+
 
 function discoverHandler (req,res) {
 
@@ -101,7 +108,22 @@ function genresHandler (req,res) {
         res.send(result.data);
     })
 
+    axios.get(url).then ((result) => {
+        let discover = result.data.results.map((item) => {
+            return new DiscoverData (item.title, item.overview);
+        })
+        res.send(discover);
+    });
 }
+
+function genresHandler (req,res) {
+    const url = `https://api.themoviedb.org/3/genre/movie/list?api_key=${movieKey}&language=en-US`;
+    axios.get(url).then ((result) => {
+        res.send(result.data);
+    })
+
+}
+
 
 function favoriteHandler (req,res)  {
     res.send('Welcome to Favorite Page');
