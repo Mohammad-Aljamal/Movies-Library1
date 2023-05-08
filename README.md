@@ -28,3 +28,10 @@ Add an image of your WRRC here
 SQL wrrs
 
 ![](./assests/Lab15-SQL.png)
+
+
+<!-- ------------------------- Lab15  ------------------- -->
+
+SQL put wrrs
+
+![](./assests/Lab16.png)

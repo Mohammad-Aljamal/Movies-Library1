@@ -50,17 +50,23 @@ function DiscoverData (title ,overview) {
 
 app.get('/',homeHandler);
 
-app.get('/trending', trendingHandler);
+app.get('/trending', trendingHandler); //API
 
-app.get('/search', searchHandler);
+app.get('/search', searchHandler);     //API
 
-app.get('/discover', discoverHandler);
+app.get('/discover', discoverHandler); //API
 
-app.get('/genres', genresHandler);
+app.get('/genres', genresHandler);     //API
 
-app.post('/addMovie',addMovie);
+app.post('/addMovie',addMovie);        //sql
 
-app.get('/getMovies',getMovie);
+app.get('/getMovies',getMovie);        //sql
+
+app.put('/update/:id',updateMovie);    //sql
+
+app.delete('/delete/:id',deleteMovie);    //sql
+
+app.get('/getMovie/:id', getMoviebyid);
 
 
 // app.use(notFoundHandler);
@@ -147,6 +153,41 @@ function getMovie (req,res){
         res.send(movieComm);
     })
 }
+
+function updateMovie (req,res){
+    const movieId = req.params.id;
+    const sql = `update movie set title=$1,release_date=$2,poster_path=$3,overview=$4,comments=$5 where id=${movieId} returning *;`;
+
+    const values = [req.body.title, req.body.release_date, req.body.poster_path, req.body.overview, req.body.comments];
+    clinet.query(sql,values).then((data) => {
+        res.status(201).send(data.rows);
+    
+    })
+
+}
+
+function deleteMovie (req,res){
+
+    const movieId = req.params.id;
+    const sql = `delete from movie where id=${movieId};`;
+
+    clinet.query(sql).then((data) => {
+        res.status(202).send('deleted');
+    
+    })
+
+}
+
+function getMoviebyid (req,res){
+    const movieId = req.params.id;
+    const sql =`select * from movie where id=${movieId};`
+
+    clinet.query(sql).then((data) => {
+        res.send(data.rows)
+    })
+
+}
+
 
 
 
