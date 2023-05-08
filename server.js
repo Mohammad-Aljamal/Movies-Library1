@@ -58,9 +58,9 @@ app.get('/discover', discoverHandler);
 
 app.get('/genres', genresHandler);
 
-app.post('/favorite',addMovie);
+app.post('/addMovie',addMovie);
 
-app.get('/favorite',getMovie);
+app.get('/getMovies',getMovie);
 
 
 // app.use(notFoundHandler);
