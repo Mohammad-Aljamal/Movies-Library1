@@ -14,7 +14,7 @@ app.use(cors());
 app.use(express.json());    //to allow the server to read req.body
 // app.use(errorHandler);
 
-let result = [];
+let result = [];   ////////
 
 function LocalData (title,poster_path,overview){
     this.title = title;
