@@ -8,7 +8,6 @@
 Add an image of your WRRC here
 ![](./assests/Lab13.png)
 
-![](./Lab13.png)
 ## Overview
 
 ## Getting Started
@@ -30,7 +29,7 @@ SQL wrrs
 ![](./assests/Lab15-SQL.png)
 
 
-<!-- ------------------------- Lab15  ------------------- -->
+<!-- ------------------------- Lab16  ------------------- -->
 
 SQL put wrrs
 
