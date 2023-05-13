@@ -17,7 +17,7 @@ Add an image of your WRRC here
 <!-- What are the features included in you app -->
 
 
-<!------------------------lab14 /////-------------------->
+<!------------------------lab14 -------------------->
 
 ![](./assests/Lab14.png)
 
