@@ -7,3 +7,4 @@ CREATE TABLE IF NOT EXISTS movie(
     overview varchar(255),
     comments varchar(255)
 );
+
