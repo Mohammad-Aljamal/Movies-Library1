@@ -24,34 +24,16 @@ function LocalData (title,poster_path,overview){
     result.push(this);
 }
 
+// app.use(notFoundHandler);
+// function notFoundHandler (req,res) {
+//     res.status(404).send('page not found error');
+// }
 
-app.get('/',(req,res) => {
+// function notFoundServer (req,res) {
+//     res.status(500).send('Sorry, something went wrong');
 
-    new Data (dataJson.title,dataJson.poster_path,dataJson.overview);
-    res.send(result);
+// }
 
-
-})
-
-app.get('/favorite', (req,res) => {
-    res.send('Welcome to Favorite Page');
-
-})
-
-app.use(notFoundHandler);
-function notFoundHandler (req,res) {
-    res.status(404).send('page not found error');
-}
-
-function notFoundServer (req,res) {
-    res.status(500).send('Sorry, something went wrong');
-
-}
-
-app.listen(port,() => {
-
-    console.log(`im listen to port ${port}`)
-});
 
 function ApiData (id, title, release_date, poster_path, overview){
     this.id = id;
