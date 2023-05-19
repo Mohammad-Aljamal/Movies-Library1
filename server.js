@@ -174,8 +174,10 @@ function updateMovie (req,res){
 
     const values = [req.body.title, req.body.release_date, req.body.poster_path, req.body.overview, req.body.comments];
     clinet.query(sql,values).then((data) => {
-        res.status(201).send(data.rows);
-    
+        const newsql = 'SELECT * FROM movie';
+        clinet.query(newsql).then ((data) => {
+            res.status(201).send(data.rows);
+        })    
     })
 
 }
@@ -186,8 +188,10 @@ function deleteMovie (req,res){
     const sql = `delete from movie where id=${movieId};`;
 
     clinet.query(sql).then((data) => {
-        res.status(202).send('deleted');
-    
+        const newsql = 'SELECT * FROM movie';
+        clinet.query(newsql).then ((data) => {
+            res.status(201).send(data.rows);
+        })        
     })
 
 }
