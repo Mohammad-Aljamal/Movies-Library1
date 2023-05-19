@@ -141,10 +141,13 @@ function genresHandler (req,res) {
 
 function addMovie (req,res){
     const movie = req.body;
-    const sql = 'INSERT into movie (title,comments) values ($1,$2);';
-    const values = [movie.title , movie.comments];
+    const sql = 'INSERT into movie (title,poster_path,release_date,overview,comment) values ($1,$2,$3,$4,$5);';
+    const values = [movie.title ,movie.poster_path, movie.release_date, movie.overview, movie.comment];
     clinet.query(sql , values).then(()=>{
-        res.send("added");
+        const newsql = 'SELECT * FROM movie;';
+        clinet.query(newsql).then((data) => {
+            res.status(200).send(data.rows);
+        })
     })
 }
 

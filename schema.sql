@@ -5,6 +5,6 @@ CREATE TABLE IF NOT EXISTS movie(
     release_date varchar(255),
     poster_path varchar(255),
     overview varchar(255),
-    comments varchar(255)
+    comment varchar(255)
 );
 
