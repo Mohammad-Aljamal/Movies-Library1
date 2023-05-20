@@ -49,7 +49,7 @@ function MovieComments (id, title, release_date, poster_path, overview,comments)
     this.release_date = release_date;
     this.poster_path = poster_path;
     this.overview = overview;
-    this.comments = comments;
+    this.comment = comments;
 }
 
 function DiscoverData (title ,overview) {
@@ -154,14 +154,15 @@ function addMovie (req,res){
 function getMovie (req,res){
     const sql = 'select * from movie';
     clinet.query(sql).then((data)=>{
+
         let movieComm = data.rows.map((item)=>{
-            return new MovieComments(
+           return new MovieComments(
                 item.id ,
                 item.title,
                 item.release_date,
                 item.poster_path,
                 item.overview,
-                item.comments)
+                item.comment)
         })
 
         res.send(movieComm);
@@ -172,7 +173,7 @@ function updateMovie (req,res){
     const movieId = req.params.id;
     const sql = `update movie set title=$1,release_date=$2,poster_path=$3,overview=$4,comments=$5 where id=${movieId} returning *;`;
 
-    const values = [req.body.title, req.body.release_date, req.body.poster_path, req.body.overview, req.body.comments];
+    const values = [req.body.title, req.body.release_date, req.body.poster_path, req.body.overview, req.body.comment];
     clinet.query(sql,values).then((data) => {
         const newsql = 'SELECT * FROM movie';
         clinet.query(newsql).then ((data) => {
